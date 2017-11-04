@@ -1,0 +1,103 @@
+Project Euler
+
+1. 
+let rec sum35 = function
+| x when x=5 -> 8
+| x when ((x mod 5)=0 || (x mod 3)=0) -> x + (sum35 (x-1))
+| x -> sum35 (x-1);; 
+
+2. 
+def sum_fib():
+  a, b = 1, 1
+  s = 0
+  while b < 4000000:
+    a, b = b, a+b
+    if not b%2:
+    s += b
+  return s
+
+3. 
+let is_prime n = 
+  if n=2 then true
+  else if n<2 || n mod 2 = 0 then false
+  else
+    let rec loop k = 
+      if k*k > n then true
+      else if n mod k = 0 then false
+      else loop (k+2) in
+  loop 3
+
+let rec answer = function
+  | n when (is_prime n) && 600851475143 mod n = 0 -> n
+  | n -> answer (n-1)
+
+answer sqrt(600851475143)
+
+4. 
+let rec helper s = 
+    let n = String.length s in
+    if n=1 then s else (helper (String.sub s 1 (n-1))) ^ Char.escaped s.[0]
+    in
+  helper s
+
+let is_palindrome s = rev_string s = s
+
+let (--) i j = 
+    let rec aux n acc =
+      if n < i then acc else aux (n-1) (n :: acc)
+    in aux j [] ;;
+  
+let answer = 
+  List.fold_left (fun a x ->
+    List.fold_left (fun b y -> 
+      if is_palindrome (string_of_int (x*y))
+        then (max b (x*y))
+      else b) a (List.rev (1--999))) 0 (List.rev (1--999))
+
+5. 
+232792560 by hand
+
+6.
+5050**2 - sum(x*x for x in range(1, 101))
+
+7.
+def gen_primes():
+  d = {}
+  q = 2
+  while True:
+    if q not in d:
+      yield q
+      d[q*q] = [q]
+    else:
+      for p in d[q]:
+        d.setdefault(p+q, []).append(p)
+      del d[q]
+    q += 1
+
+g = gen_primes()
+for _ in range(100001):
+  next(g)
+
+8. 
+s = """...."""
+n = len(s)
+m = 0
+for i in range(n-13):
+  if '0' in s[i:i+13]:
+    continue
+  m = max(m, functools.reduce(lambda x,y:x*y, [int(c) for c in s[i:i+13]]))
+
+9. 
+let squares = List.map (fun x -> x*x) (0--600)
+
+let answer = 
+  List.fold_left (fun a x ->
+    List.fold_left (fun b y -> let diff = abs (x*x - y*y) in
+      if List.mem diff squares && (x + y + int_of_float (sqrt (float_of_int diff))) = 1000 
+        then x*y*(int_of_float (sqrt (float_of_int diff)))
+      else b) a (List.rev (1--600))) 0 (List.rev (1--600))
+
+10.
+List.fold_left (fun a x -> if is_prime x then a+x else a) 0 (1--2000000)
+
+11.
